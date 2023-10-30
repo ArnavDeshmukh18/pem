@@ -4,20 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="975206b9-7e4e-4e13-9dce-2e20552db35f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pem.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Budget.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Category.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DateUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Expense.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Repository.java" afterDir="false" />
+    <list default="true" id="975206b9-7e4e-4e13-9dce-2e20552db35f" name="Changes" comment="First Commit">
+      <change afterPath="$PROJECT_DIR$/src/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Budget.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Budget.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Expense.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Expense.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,11 +63,41 @@
       <workItem from="1697178579135" duration="342000" />
       <workItem from="1697466149229" duration="4234000" />
       <workItem from="1697649719629" duration="669000" />
-      <workItem from="1697865343506" duration="2719000" />
+      <workItem from="1697865343506" duration="2980000" />
+      <workItem from="1697991826366" duration="235000" />
+      <workItem from="1698307385309" duration="125000" />
+      <workItem from="1698335865084" duration="6134000" />
+      <workItem from="1698429241188" duration="433000" />
+      <workItem from="1698456890072" duration="4168000" />
+      <workItem from="1698603278480" duration="1269000" />
     </task>
+    <task id="LOCAL-00001" summary="First Commit">
+      <option name="closed" value="true" />
+      <created>1697868291042</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1697868291043</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="First Commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="First Commit" />
   </component>
 </project>

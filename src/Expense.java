@@ -11,9 +11,9 @@ public class Expense {
     public Expense() {
     }
 
-    public Expense(Long categoryId, Float amount, Date date, String description) {
+    public Expense(Long categoryId, Long amount, Date date, String description) {
         this.categoryId = categoryId;
-        this.amount = amount;
+        this.amount = Float.valueOf(amount);
         this.date = date;
         this.description = description;
     }
@@ -38,8 +38,8 @@ public class Expense {
         return amount;
     }
 
-    public void setAmount(Float amount) {
-        this.amount = amount;
+    public void setAmount(Long amount) {
+        this.amount = Float.valueOf(amount);
     }
 
     public Date getDate() {

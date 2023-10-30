@@ -5,58 +5,89 @@ public class Controller {
     private final Scanner sc=new Scanner(System.in);
     private  int choice;
 
-    Repository repository=Repository.getRepository();
-    Budget budget=new Budget();
+
+
+    User user=new User();
     public void displayMenu() throws FileNotFoundException {
         while(true)
         {
             createMenu();
             switch (choice) {
                 case 1 :
-
                     //TODO:Add Budget
-                    System.out.println("******* Add Budget *******");
-                    onAddBudget();
+                    System.out.println("******* Sign Up *******");
+                    createUser();
                     pressKey();
                     break;
 
 
                 case 2 :
+                    //TODO:Add Budget
+                    System.out.println("******* LogIn *******");
+                    logIn();
+                    pressKey();
+                    break;
+
+                case 3 :
+                    //TODO:Add Budget
+                    System.out.println("******* Create Repository *******");
+                    createRepo();
+                    pressKey();
+                    break;
+
+                case 4 :
+                    //TODO:Add Budget
+                    System.out.println("******* Initialize Budget *******");
+                    createBudget();
+                    pressKey();
+                    break;
+
+
+
+                case 5 :
                     //TODO:Add Expense
                     System.out.println("******* Add Category *******");
                     onAddCategory();
                     pressKey();
                     break;
-                case 3 :
+
+
+                case 6 :
                     //TODO:Add Budget
                     System.out.println("******* Add Expense *******");
+                    onAddBudget();
+                    pressKey();
+                    break;
+                case 7 :
+                    //TODO:Add Budget
+                    System.out.println("******* Display Budget *******");
                     onAddExpense();
                     pressKey();
                     break;
-                case 4 :
-                    //TODO:Add Budget
-                    System.out.println("******* Display Budget *******");
-                    pressKey();
-                    break;
-                case 5 :
+
+                case 8 :
                     //TODO:Add Budget
                     System.out.println("******* Display Categorise Expense *******");
                     displayCategoryList();
                     pressKey();
                     break;
-                case 6 :
+
+                case 9 :
                     //TODO:Add Budget
                     System.out.println("******* Display Monthly Expense *******");
                     displayExpenseList();
                     pressKey();
                     break;
 
-                case 7 :
+                case 10 :
                     //TODO:Add Budget
                     System.out.println("******* Display Yearly Expense *******");
                     displayExpenseList();
                     pressKey();
                     break;
+
+
+
 
 
                 case 0 : System.exit(0);
@@ -68,13 +99,16 @@ public class Controller {
     public void createMenu()
     {
         System.out.println("*******Expense Manager*******");
-        System.out.println("1.Add Budget");
-        System.out.println("2.Add Category");
-        System.out.println("3.Add Expense");
-        System.out.println("4.Display Budget");
-        System.out.println("5.Display Categorise Expense");
-        System.out.println("6.Display Monthly Expense");
-        System.out.println("7.Display Yearly Expense");
+        System.out.println("1.SignUp");
+        System.out.println("2.LogIn");
+        System.out.println("3.Initialize Repository");
+        System.out.println("4.Initialize Budget");
+        System.out.println("5.Add Category");
+        System.out.println("6.Add Budget");
+        System.out.println("7.Add Expense");
+        System.out.println("8.Display All Categories");
+        System.out.println("9.Display Monthly Expense Report");
+        System.out.println("10.Display Yearly Expense Report");
         System.out.println("0.Exit");
         System.out.print("Enter Your Choice : ");
         choice=sc.nextInt();
@@ -91,25 +125,44 @@ public class Controller {
         }
     }
 
-    public void onAddBudget()
+  public void createBudget()
     {
         sc.nextLine();
         System.out.println("******* Adding Budget *******");
      System.out.print("Enter the Amount : ");
-     Float bud=sc.nextFloat();
-     budget.setTotalBudget(bud);
-
+     long bud=sc.nextLong();
+     user.createBudget(bud);
     }
 
     public void onAddCategory()
     {
         sc.nextLine();
-        System.out.print("Enter the Category : ");
-        String cat=sc.nextLine();
-        Category category=new Category();
-        category.setName(cat);
-        repository.categoryList.add(category);
+        if(user.getRepository()==null)
+        {
+            System.out.println("Repository is Not Created ! ");
+        }
+        else {
+            System.out.print("Enter the Category : ");
+            String cat = sc.nextLine();
+            Category category = new Category();
+            category.setName(cat);
+            user.getRepository().categoryList.add(category);
+        }
+    }
 
+    public void onAddBudget(){
+        sc.nextLine();
+        if(user.budget==null)
+        {
+            System.out.println("Initialize Budget !");
+        }
+        else {
+            System.out.println("Enter Amount : ");
+            long bud=sc.nextLong();
+            user.budget.addAmount(bud);
+            System.out.println("Current Budget : "+user.budget.getCurrentAmount());
+
+        }
     }
 
     public void onAddExpense()
@@ -119,10 +172,10 @@ public class Controller {
         displayCategoryList();
         System.out.print("Enter Category Choice : ");
         int index= sc.nextInt();
-        Category selectedCat=repository.getCategoryList().get(index-1);
+        Category selectedCat= user.getRepository().getCategoryList().get(index-1);
         System.out.print("Enter the Amount : ");
-        Float amount=sc.nextFloat();
-        budget.subAmount(amount);
+        long amount=sc.nextLong();
+        user.budget.subAmount(amount);
         System.out.print("Enter Category Id : ");
         Long id= sc.nextLong();
 
@@ -132,7 +185,7 @@ public class Controller {
         System.out.print("Enter Description : ");
         String dis=sc.nextLine();
         Expense exp=new Expense(id,amount,date,dis);
-        repository.expenseList.add(exp);
+        user.getRepository().expenseList.add(exp);
 
 
     }
@@ -140,15 +193,19 @@ public class Controller {
     public void displayCategoryList()
     {   sc.nextLine();
         System.out.println("******* Displaying Categorises *******");
-       List<Category>catList=repository.categoryList;
-       System.out.println(" "+"Category Name");
-       for (int i=0;i<catList.size();i++)
-       {
-           Category c=catList.get(i);
-           System.out.println((i+1)+" "+c.getName());
-       }
-       System.out.println();
-
+        if(user.getRepository()==null)
+        {
+            System.out.println("Repository is Not Created ! ");
+        }
+        else {
+            List<Category> catList = user.getRepository().getCategoryList();
+            System.out.println("Id" + "Category Name");
+            for (int i = 0; i < catList.size(); i++) {
+                Category c = catList.get(i);
+                System.out.println((i + 1) + " " + c.getName());
+            }
+        }
+            System.out.println();
     }
 
 
@@ -163,7 +220,7 @@ public class Controller {
             strName=br.readLine();
             File file=new File("D:\\"+strName+".txt");
             PrintStream stream=new PrintStream(file);
-            List<Expense>expList=repository.expenseList;
+            List<Expense>expList= user.getRepository().expenseList;
             System.setOut(stream);
             System.out.println(" "+"CategoryId"+" "+"Date"+" "+"Description"+" "+"Amount");
             for (int i=0;i<expList.size();i++)
@@ -190,4 +247,43 @@ public class Controller {
 
     }
 
+
+    public void createUser()
+    { String userName;
+        String passWord;
+        sc.nextLine();
+        System.out.println("Enter User Name :  ");
+        userName=sc.nextLine();
+        System.out.println("Enter Password :  ");
+        passWord=sc.nextLine();
+        user.signUp(userName,passWord);
+
+    }
+
+
+    public void logIn()
+    {
+        String userName;
+        String passWord;
+        sc.nextLine();
+        System.out.println("Enter User Name :  ");
+        userName=sc.nextLine();
+        System.out.println("Enter Password :  ");
+        passWord=sc.nextLine();
+        user.login(userName,passWord);
+
+    }
+
+    public void createRepo()
+    {
+        sc.nextLine();
+        if(user.loggedIn)
+        {
+            user.createRepository();
+            System.out.println("Repository Is Created");
+        }
+        else{
+            System.out.println("User is Not Logged In");
+        }
+    }
 }

@@ -1,34 +1,45 @@
 public class Budget {
-    private Float totalBudget;
-   private Float currentAmount;
+    private Long totalBudget;
+   private Long currentAmount;
+   private User user;
 
-    public Budget(Float totalBudget) {
+    public Budget(long totalBudget) {
         this.totalBudget = totalBudget;
     }
 
-    public void setTotalBudget(Float totalBudget) {
+    public void setTotalBudget(long totalBudget) {
         this.totalBudget = totalBudget;
         currentAmount=totalBudget;
     }
 
     public Budget() {
+        totalBudget= 0L;
     }
 
-    public void addAmount(Float amount)
+    public void addAmount(long amount)
     {
         currentAmount+=amount;
     }
 
-    public void subAmount(Float amount)
+    public void subAmount(long amount)
     {
         currentAmount-=amount;
     }
 
-    public Float getTotalBudget() {
+    public long getTotalBudget() {
         return totalBudget;
     }
 
-    public Float getCurrentAmount() {
+    public long getCurrentAmount() {
         return currentAmount;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
 }
