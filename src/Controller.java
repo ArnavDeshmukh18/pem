@@ -1,14 +1,12 @@
 import java.io.*;
+import java.sql.Connection;
 import java.util.*;
 
 public class Controller {
     private final Scanner sc=new Scanner(System.in);
     private  int choice;
-
-
-
     User user=new User();
-    public void displayMenu() throws FileNotFoundException {
+    public void displayMenu(Connection connection) throws FileNotFoundException {
         while(true)
         {
             createMenu();
@@ -35,12 +33,7 @@ public class Controller {
                     pressKey();
                     break;
 
-                case 4 :
-                    //TODO:Add Budget
-                    System.out.println("******* Initialize Budget *******");
-                    createBudget();
-                    pressKey();
-                    break;
+
 
 
 
@@ -61,14 +54,14 @@ public class Controller {
                 case 7 :
                     //TODO:Add Budget
                     System.out.println("******* Display Budget *******");
-                    onAddExpense();
+                    onAddExpense(connection);
                     pressKey();
                     break;
 
                 case 8 :
                     //TODO:Add Budget
                     System.out.println("******* Display Categorise Expense *******");
-                    displayCategoryList();
+                    displayCategoryList(connection);
                     pressKey();
                     break;
 
@@ -115,6 +108,50 @@ public class Controller {
 
     }
 
+
+    public void createUser()
+    { String userName;
+        String passWord;
+        sc.nextLine();
+        System.out.println("Enter User Name :  ");
+        userName=sc.nextLine();
+        System.out.println("Enter Password :  ");
+        passWord=sc.nextLine();
+        user.signUp(userName,passWord);
+        user.saveToDatabase();
+        createRepo();
+    }
+
+    public void logIn()
+    {
+        String userName;
+        String passWord;
+        sc.nextLine();
+        if(user.loggedIn){
+            System.out.println("User Already LoggedIn !!!");
+        }else {
+        System.out.println("Enter User Name :  ");
+        userName=sc.nextLine();
+        System.out.println("Enter Password :  ");
+        passWord=sc.nextLine();
+        user.loginUser(userName,passWord);
+        createRepo();
+
+        }
+    }
+
+    public void createRepo()
+    {
+        sc.nextLine();
+        if(user.loggedIn)
+        {
+            user.createRepository();
+            System.out.println("Repository Is Created");
+        }
+        else{
+            System.out.println("User is Not Logged In");
+        }
+    }
     public void pressKey()  {
         try{
             System.out.println("Enter Any Key to Continue....");
@@ -132,6 +169,9 @@ public class Controller {
      System.out.print("Enter the Amount : ");
      long bud=sc.nextLong();
      user.createBudget(bud);
+        user.addBudgetDB();
+
+
     }
 
     public void onAddCategory()
@@ -146,7 +186,8 @@ public class Controller {
             String cat = sc.nextLine();
             Category category = new Category();
             category.setName(cat);
-            user.getRepository().categoryList.add(category);
+            category.saveCategory();
+
         }
     }
 
@@ -160,19 +201,18 @@ public class Controller {
             System.out.println("Enter Amount : ");
             long bud=sc.nextLong();
             user.budget.addAmount(bud);
+            user.addBudgetDB();
             System.out.println("Current Budget : "+user.budget.getCurrentAmount());
 
         }
     }
 
-    public void onAddExpense()
+    public void onAddExpense(Connection connection)
     {
 
         System.out.println("******* Adding Expense *******");
-        displayCategoryList();
-        System.out.print("Enter Category Choice : ");
-        int index= sc.nextInt();
-        Category selectedCat= user.getRepository().getCategoryList().get(index-1);
+        displayCategoryList(connection);
+
         System.out.print("Enter the Amount : ");
         long amount=sc.nextLong();
         user.budget.subAmount(amount);
@@ -185,12 +225,14 @@ public class Controller {
         System.out.print("Enter Description : ");
         String dis=sc.nextLine();
         Expense exp=new Expense(id,amount,date,dis);
+    exp.addExpenseToDb(user);
         user.getRepository().expenseList.add(exp);
+        user.updateBudgetDB();
 
 
     }
 
-    public void displayCategoryList()
+    public void displayCategoryList(Connection connection)
     {   sc.nextLine();
         System.out.println("******* Displaying Categorises *******");
         if(user.getRepository()==null)
@@ -198,7 +240,8 @@ public class Controller {
             System.out.println("Repository is Not Created ! ");
         }
         else {
-            List<Category> catList = user.getRepository().getCategoryList();
+            Category category=new Category();
+            List<Category> catList = category.getAllCategories(connection);
             System.out.println("Id" + "Category Name");
             for (int i = 0; i < catList.size(); i++) {
                 Category c = catList.get(i);
@@ -248,42 +291,10 @@ public class Controller {
     }
 
 
-    public void createUser()
-    { String userName;
-        String passWord;
-        sc.nextLine();
-        System.out.println("Enter User Name :  ");
-        userName=sc.nextLine();
-        System.out.println("Enter Password :  ");
-        passWord=sc.nextLine();
-        user.signUp(userName,passWord);
-
-    }
 
 
-    public void logIn()
-    {
-        String userName;
-        String passWord;
-        sc.nextLine();
-        System.out.println("Enter User Name :  ");
-        userName=sc.nextLine();
-        System.out.println("Enter Password :  ");
-        passWord=sc.nextLine();
-        user.login(userName,passWord);
 
-    }
 
-    public void createRepo()
-    {
-        sc.nextLine();
-        if(user.loggedIn)
-        {
-            user.createRepository();
-            System.out.println("Repository Is Created");
-        }
-        else{
-            System.out.println("User is Not Logged In");
-        }
-    }
+
+
 }

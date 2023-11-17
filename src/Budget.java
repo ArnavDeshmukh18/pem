@@ -19,6 +19,7 @@ public class Budget {
     public void addAmount(long amount)
     {
         currentAmount+=amount;
+        totalBudget+=amount;
     }
 
     public void subAmount(long amount)
