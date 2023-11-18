@@ -77,21 +77,21 @@ public class Controller {
                 case 8 :
                     //TODO:Add Budget
                     System.out.println("******* Display Categorise Expense *******");
-                    displayCategoryList(connection);
+                    displayExpenseListCategorywise(connection);
                     pressKey();
                     break;
 
                 case 9 :
                     //TODO:Add Budget
                     System.out.println("******* Display Monthly Expense *******");
-                    displayExpenseList();
+                    displayExpenseListMonthwise();
                     pressKey();
                     break;
 
                 case 10 :
                     //TODO:Add Budget
                     System.out.println("******* Display Yearly Expense *******");
-                    displayExpenseList();
+                    displayExpenseListYearwise();
                     pressKey();
                     break;
 
@@ -115,7 +115,7 @@ public class Controller {
         System.out.println("5.Add Category");
         System.out.println("6.Add Budget");
         System.out.println("7.Add Expense");
-        System.out.println("8.Display All Categories");
+        System.out.println("8.Display  Categories Wise Expense Report");
         System.out.println("9.Display Monthly Expense Report");
         System.out.println("10.Display Yearly Expense Report");
         System.out.println("0.Exit");
@@ -276,10 +276,11 @@ public class Controller {
     }
 
 
-    public void displayExpenseList() throws FileNotFoundException {   sc.nextLine();
+    public void displayExpenseListCategorywise(Connection connection) throws FileNotFoundException {   sc.nextLine();
         String strPath=" ",strName=" ";
+        int id=0;
         try{
-             PrintStream originalOut=System.out;
+            PrintStream originalOut=System.out;
             System.out.println("******* Displaying Expenses *******");
             BufferedReader br = new BufferedReader(
                     new InputStreamReader(System.in));
@@ -287,6 +288,11 @@ public class Controller {
             strName=br.readLine();
             File file=new File("D:\\"+strName+".txt");
             PrintStream stream=new PrintStream(file);
+            displayCategoryList(connection);
+            System.out.println("Enter Category Id: ");
+            id=sc.nextInt();
+            Expense ep=new Expense();
+            ep.getExpensesCategorywise(user,id);
             List<Expense>expList= user.getRepository().expenseList;
             System.setOut(stream);
             System.out.println(" "+"CategoryId"+" "+"Date"+" "+"Description"+" "+"Amount");
@@ -313,6 +319,95 @@ public class Controller {
 
 
     }
+
+
+    public void displayExpenseListMonthwise() throws FileNotFoundException {   sc.nextLine();
+        String strPath=" ",strName=" ";
+        int month=0;
+        try{
+             PrintStream originalOut=System.out;
+            System.out.println("******* Displaying Expenses *******");
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(System.in));
+            System.out.println("Enter File Name : ");
+            strName=br.readLine();
+            File file=new File("D:\\"+strName+".txt");
+            PrintStream stream=new PrintStream(file);
+            System.out.println("Enter Month Number: ");
+            month=sc.nextInt();
+            Expense ep=new Expense();
+            ep.getExpensesMonthwise(user,month);
+            List<Expense>expList= user.getRepository().expenseList;
+            System.setOut(stream);
+            System.out.println(" "+"CategoryId"+" "+"Date"+" "+"Description"+" "+"Amount");
+            for (int i=0;i<expList.size();i++)
+            {
+                Expense e =expList.get(i);
+                System.out.println((i+1)+" "+e.categoryId+" "+DateUtil.displayString(e.date)+" "+" "+e.getDescription()+" "+e.getAmount());
+            }
+            System.setOut(originalOut);
+            System.out.println(" "+"CategoryId"+" "+"Date"+" "+"Description"+" "+"Amount");
+            for (int i=0;i<expList.size();i++)
+            {
+                Expense e =expList.get(i);
+                System.out.println((i+1)+" "+e.categoryId+" "+DateUtil.displayString(e.date)+" "+" "+e.getDescription()+" "+e.getAmount());
+            }
+
+            System.out.println();
+        }catch (FileNotFoundException ex)
+        {
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+
+    public void displayExpenseListYearwise() throws FileNotFoundException {   sc.nextLine();
+        String strPath=" ",strName=" ";
+        int Year=0;
+        try{
+            PrintStream originalOut=System.out;
+            System.out.println("******* Displaying Expenses *******");
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(System.in));
+            System.out.println("Enter File Name : ");
+            strName=br.readLine();
+            File file=new File("D:\\"+strName+".txt");
+            PrintStream stream=new PrintStream(file);
+            System.out.println("Enter Year Number: ");
+            Year=sc.nextInt();
+            Expense ep=new Expense();
+            ep.getExpensesYearwise(user,Year);
+            List<Expense>expList= user.getRepository().expenseList;
+            System.setOut(stream);
+            System.out.println(" "+"CategoryId"+" "+"Date"+" "+"Description"+" "+"Amount");
+            for (int i=0;i<expList.size();i++)
+            {
+                Expense e =expList.get(i);
+                System.out.println((i+1)+" "+e.categoryId+" "+DateUtil.displayString(e.date)+" "+" "+e.getDescription()+" "+e.getAmount());
+            }
+            System.setOut(originalOut);
+            System.out.println(" "+"CategoryId"+" "+"Date"+" "+"Description"+" "+"Amount");
+            for (int i=0;i<expList.size();i++)
+            {
+                Expense e =expList.get(i);
+                System.out.println((i+1)+" "+e.categoryId+" "+DateUtil.displayString(e.date)+" "+" "+e.getDescription()+" "+e.getAmount());
+            }
+
+            System.out.println();
+        }catch (FileNotFoundException ex)
+        {
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
 
 
 

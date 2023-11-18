@@ -1,5 +1,6 @@
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -88,6 +89,90 @@ public class Expense {
     }
 
 
+    public void getExpensesMonthwise(User user,int month)
+    {
+
+        try (Connection connection = getConnection(url, dbuser, password)) {
+            String query = " select * from expenses where MONTH(date_created)=? and user_id=?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+
+                statement.setInt(1,month );
+                statement.setInt(2,user.userId);
+                ResultSet resultSet = statement.executeQuery();
+
+                user.getRepository().expenseList.clear();
+                while (resultSet.next()) {
+
+
+                       Expense e=new Expense(resultSet.getLong("category_id"),resultSet.getLong("price"),resultSet.getDate("date_created"),resultSet.getString("description"));
+
+
+                       user.getRepository().expenseList.add(e);
+
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void getExpensesYearwise(User user,int year)
+    {
+
+        try (Connection connection = getConnection(url, dbuser, password)) {
+            String query = " select * from expenses where YEAR(date_created)=? and user_id=?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+
+                statement.setInt(1,year );
+                statement.setInt(2,user.userId);
+                ResultSet resultSet = statement.executeQuery();
+
+                user.getRepository().expenseList.clear();
+                while (resultSet.next()) {
+
+
+                    Expense e=new Expense(resultSet.getLong("category_id"),resultSet.getLong("price"),resultSet.getDate("date_created"),resultSet.getString("description"));
+
+
+                    user.getRepository().expenseList.add(e);
+
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getExpensesCategorywise(User user,int categoryId)
+    {
+
+        try (Connection connection = getConnection(url, dbuser, password)) {
+            String query = " select * from expenses where category_id=? and user_id=?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+
+                statement.setInt(1,categoryId );
+                statement.setInt(2,user.userId);
+                ResultSet resultSet = statement.executeQuery();
+
+                user.getRepository().expenseList.clear();
+                while (resultSet.next()) {
+
+
+                    Expense e=new Expense(resultSet.getLong("category_id"),resultSet.getLong("price"),resultSet.getDate("date_created"),resultSet.getString("description"));
+
+
+                    user.getRepository().expenseList.add(e);
+
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
 

@@ -245,9 +245,6 @@ public class User {
                     System.out.println("Current Budget :"+budget.getCurrentAmount());
 
                 }
-
-
-
             }
 
         } catch (SQLException e) {
