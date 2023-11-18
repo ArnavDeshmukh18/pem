@@ -6,6 +6,17 @@ public class Controller {
     private final Scanner sc=new Scanner(System.in);
     private  int choice;
     User user=new User();
+    private boolean newUser=true;
+
+    public boolean isNewUser() {
+        return newUser;
+    }
+
+    public void setNewUser(boolean newUser) {
+        this.newUser = newUser;
+    }
+
+
     public void displayMenu(Connection connection) throws FileNotFoundException {
         while(true)
         {
@@ -33,7 +44,12 @@ public class Controller {
                     pressKey();
                     break;
 
+                case 4:
 
+                    System.out.println("******* Initialize Budget*******");
+                    createBudget();
+                    pressKey();
+                    break;
 
 
 
@@ -136,6 +152,8 @@ public class Controller {
         passWord=sc.nextLine();
         user.loginUser(userName,passWord);
         createRepo();
+        setNewUser(false);
+
 
         }
     }
@@ -164,14 +182,34 @@ public class Controller {
 
   public void createBudget()
     {
+        if(!isNewUser()){
+            System.out.println("Budget is Already Initialized !!!");
+        }else {
+            sc.nextLine();
+            System.out.println("******* Adding Budget *******");
+            System.out.print("Enter the Amount : ");
+            long bud = sc.nextLong();
+            user.createBudget(bud);
+            user.addBudgetDB();
+        }
+
+    }
+
+    public void onAddBudget(){
         sc.nextLine();
-        System.out.println("******* Adding Budget *******");
-     System.out.print("Enter the Amount : ");
-     long bud=sc.nextLong();
-     user.createBudget(bud);
-        user.addBudgetDB();
+        if(user.budget==null && isNewUser())
+        {
+            System.out.println("Initialize Budget !");
+        }
+        else {
+            System.out.println("Enter Amount : ");
+            long bud=sc.nextLong();
+            user.createBudget(bud);
+            user.budget.addAmount(bud);
+            user.addBudgetDB();
+            System.out.println("Current Budget : "+user.budget.getCurrentAmount());
 
-
+        }
     }
 
     public void onAddCategory()
@@ -191,21 +229,7 @@ public class Controller {
         }
     }
 
-    public void onAddBudget(){
-        sc.nextLine();
-        if(user.budget==null)
-        {
-            System.out.println("Initialize Budget !");
-        }
-        else {
-            System.out.println("Enter Amount : ");
-            long bud=sc.nextLong();
-            user.budget.addAmount(bud);
-            user.addBudgetDB();
-            System.out.println("Current Budget : "+user.budget.getCurrentAmount());
 
-        }
-    }
 
     public void onAddExpense(Connection connection)
     {

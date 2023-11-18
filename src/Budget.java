@@ -43,4 +43,12 @@ public class Budget {
         return user;
     }
 
+    public void setTotalBudgetDB(long totalBudget)
+    {
+        this.totalBudget=totalBudget;
+    }
+
+    public void setCurrentAmount(Long currentAmount) {
+        this.currentAmount = currentAmount;
+    }
 }

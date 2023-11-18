@@ -126,7 +126,9 @@ public class User {
                         System.out.println("User Logged In!");
                         signUp(inputUsername,inputPassword);
                         setLoggedIn(true);
+                        getBudgetDB(inputUsername);
                         return true;
+
                     }
                 }
             } catch (SQLException e) {
@@ -220,6 +222,34 @@ public class User {
                 statement.setInt(2,userId);
                 statement.executeUpdate();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void getBudgetDB(String username)
+    {
+        try (Connection connection = getConnection(url, user, password)) {
+            String query = "SELECT rem_budget,total_budget FROM users WHERE username = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, username);
+                ResultSet resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    budget=new Budget();
+                    budget.setTotalBudgetDB(resultSet.getLong("total_budget"));
+                    budget.setCurrentAmount(resultSet.getLong("rem_budget"));
+
+
+                    System.out.println("Total Budget : "+budget.getTotalBudget());
+                    System.out.println("Current Budget :"+budget.getCurrentAmount());
+
+                }
+
+
+
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
