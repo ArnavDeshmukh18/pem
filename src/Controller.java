@@ -70,7 +70,7 @@ public class Controller {
                 case 7 :
                     //TODO:Add Budget
                     System.out.println("******* Display Budget *******");
-                    onAddExpense(connection);
+                    onAddExpense();
                     pressKey();
                     break;
 
@@ -231,11 +231,11 @@ public class Controller {
 
 
 
-    public void onAddExpense(Connection connection)
+    public void onAddExpense()
     {
 
         System.out.println("******* Adding Expense *******");
-        displayCategoryList(connection);
+        displayCategoryList();
 
         System.out.print("Enter the Amount : ");
         long amount=sc.nextLong();
@@ -256,7 +256,7 @@ public class Controller {
 
     }
 
-    public void displayCategoryList(Connection connection)
+    public void displayCategoryList()
     {   sc.nextLine();
         System.out.println("******* Displaying Categorises *******");
         if(user.getRepository()==null)
@@ -265,7 +265,7 @@ public class Controller {
         }
         else {
             Category category=new Category();
-            List<Category> catList = category.getAllCategories(connection);
+            List<Category> catList = category.getAllCategories();
             System.out.println("Id" + "Category Name");
             for (int i = 0; i < catList.size(); i++) {
                 Category c = catList.get(i);
@@ -288,7 +288,7 @@ public class Controller {
             strName=br.readLine();
             File file=new File("D:\\"+strName+".txt");
             PrintStream stream=new PrintStream(file);
-            displayCategoryList(connection);
+            displayCategoryList();
             System.out.println("Enter Category Id: ");
             id=sc.nextInt();
             Expense ep=new Expense();

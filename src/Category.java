@@ -66,9 +66,9 @@ public class Category {
     }
 
 
-    public List<Category> getAllCategories(Connection connection) {
+    public List<Category> getAllCategories() {
         List<Category> categoryList = new ArrayList<>();
-        try ( connection ) {
+        try ( Connection connection = getConnection(url, user, password)) {
             String query = "SELECT * FROM category";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 ResultSet resultSet = statement.executeQuery();

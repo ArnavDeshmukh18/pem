@@ -18,16 +18,17 @@ public class User {
 
     Budget budget;
 
-    boolean loggedIn=false;
+    boolean loggedIn = false;
     String url = "jdbc:mysql://localhost:3306/expense";  // Root connection, no database specified
     String user = "root";
     String password = "Virat@18";
 
-    public void signUp(String userName,String passWord) {
+    public void signUp(String userName, String passWord) {
         this.userName = userName;
-        this.passWord=passWord;
+        this.passWord = passWord;
 
     }
+
     public Integer getUserId() {
         return userId;
     }
@@ -35,11 +36,6 @@ public class User {
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
-
-
-
-
-
 
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
@@ -65,21 +61,18 @@ public class User {
     }
 
 
-    public void createBudget(long amount)
-    {
-        if(isLoggedIn()){
-        if(budget == null)
-        {
-            budget=new Budget();
-            budget.setTotalBudget(amount);
-            budget.setUser(this);
-            System.out.println("Initial Budget : "+amount);
+    public void createBudget(long amount) {
+        if (isLoggedIn()) {
+            if (budget == null) {
+                budget = new Budget();
+                budget.setTotalBudget(amount);
+                budget.setUser(this);
+                System.out.println("Initial Budget : " + amount);
 
-        }
-        else {
-            System.out.println("No Budget Is Initialized !");
-        }}
-        else {
+            } else {
+                System.out.println("No Budget Is Initialized !");
+            }
+        } else {
             System.out.println("User Not Logged In !!!");
         }
     }
@@ -103,12 +96,11 @@ public class User {
 
     public boolean loginUser(String inputUsername, String inputPassword) {
 
-        if(isLoggedIn())
-        {
+        if (isLoggedIn()) {
             System.out.println("Already Logged In !");
             return false;
 
-        }else {
+        } else {
             try (Connection connection = getConnection(url, user, password)) {
                 String query = "SELECT * FROM users WHERE username = ?";
                 PreparedStatement statement = connection.prepareStatement(query);
@@ -118,13 +110,13 @@ public class User {
                 if (resultSet.next()) {
                     // User found, check password
                     String storedPassword = resultSet.getString("password");
-                    Integer id=resultSet.getInt("id");
+                    Integer id = resultSet.getInt("id");
                     setUserId(id);
                     if (inputPassword.equals(storedPassword)) {
-                        signUp(inputUsername,inputPassword);
+                        signUp(inputUsername, inputPassword);
                         //  System.out.println(this.userId+" "+this.userName+" "+this.passWord);
                         System.out.println("User Logged In!");
-                        signUp(inputUsername,inputPassword);
+                        signUp(inputUsername, inputPassword);
                         setLoggedIn(true);
                         getBudgetDB(inputUsername);
                         return true;
@@ -193,15 +185,14 @@ public class User {
 
     }
 
-    public void addBudgetDB()
-    {
+    public void addBudgetDB() {
 
         try (Connection connection = getConnection(url, user, password)) {
             String query = "UPDATE users SET total_budget = ? ,rem_budget = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-             statement.setLong(1,budget.getTotalBudget());
-             statement.setLong(2,budget.getCurrentAmount());
-             statement.setInt(3,userId);
+                statement.setLong(1, budget.getTotalBudget());
+                statement.setLong(2, budget.getCurrentAmount());
+                statement.setInt(3, userId);
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -210,16 +201,14 @@ public class User {
     }
 
 
-
-    public void updateBudgetDB()
-    {
+    public void updateBudgetDB() {
 
         try (Connection connection = getConnection(url, user, password)) {
             String query = "UPDATE users SET rem_budget = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
 
-                statement.setLong(1,budget.getCurrentAmount());
-                statement.setInt(2,userId);
+                statement.setLong(1, budget.getCurrentAmount());
+                statement.setInt(2, userId);
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -228,21 +217,20 @@ public class User {
     }
 
 
-    public void getBudgetDB(String username)
-    {
+    public void getBudgetDB(String username) {
         try (Connection connection = getConnection(url, user, password)) {
             String query = "SELECT rem_budget,total_budget FROM users WHERE username = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, username);
                 ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()) {
-                    budget=new Budget();
+                    budget = new Budget();
                     budget.setTotalBudgetDB(resultSet.getLong("total_budget"));
                     budget.setCurrentAmount(resultSet.getLong("rem_budget"));
 
 
-                    System.out.println("Total Budget : "+budget.getTotalBudget());
-                    System.out.println("Current Budget :"+budget.getCurrentAmount());
+                    System.out.println("Total Budget : " + budget.getTotalBudget());
+                    System.out.println("Current Budget :" + budget.getCurrentAmount());
 
                 }
             }
